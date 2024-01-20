@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="10" />
+    <title>Gamedev Canvas Workshop</title>
+    <style>
+      * {
+        /* universal selector, which selects all elements on the web page*/
+        padding: 0;
+        margin: 0;
+      }
+      canvas {
+        background: #eee;
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="mycanvas" width="480" height="320"></canvas>
+
+    <script>
+      // JavaScript code goes here
+      const canvas = document.getElementById("mycanvas");
+      const ctx = canvas.getContext("2d"); //targets the element's context - the thing onto which the drawing will be rendered
+      ctx.beginPath();
+      ctx.rect(20, 40, 50, 50); // create rectangle
+      ctx.fillstyle = "#FF0000"; // stores color to fill rectangle
+      ctx.fill(); // paints the rectangle
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.arc(240, 160, 20, 0, Math.PI * 2, false);
+      ctx.fillstyle = "green";
+      ctx.fill();
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.rect(160, 10, 100, 40);
+      ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
+      ctx.stroke(); // paints the outer parts of shape
+      ctx.closePath();
+    </script>
+  </body>
+</html>
