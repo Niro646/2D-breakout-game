@@ -25,23 +25,27 @@
       // JavaScript code goes here
       const canvas = document.getElementById("mycanvas");
       const ctx = canvas.getContext("2d"); //targets the element's context - the thing onto which the drawing will be rendered
-      ctx.beginPath();
-      ctx.rect(20, 40, 50, 50); // create rectangle
-      ctx.fillstyle = "#FF0000"; // stores color to fill rectangle
-      ctx.fill(); // paints the rectangle
-      ctx.closePath();
+      let x = canvas.width / 2;
+      let y = canvas.height - 30;
+      let dx = 2;
+      let dy = -2;
 
-      ctx.beginPath();
-      ctx.arc(240, 160, 20, 0, Math.PI * 2, false);
-      ctx.fillstyle = "green";
-      ctx.fill();
-      ctx.closePath();
+      function drawball() {
+        //this function draws the ball
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, Math.PI * 2);
+        ctx.fillstyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+      }
 
-      ctx.beginPath();
-      ctx.rect(160, 10, 100, 40);
-      ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-      ctx.stroke(); // paints the outer parts of shape
-      ctx.closePath();
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // cleans the area of whole canvas
+        drawball(); // calling function that draws the ball
+        x = x + dx;
+        y = y + dy;
+      }
+      setInterval(draw, 10); // executes "draw" function every 10 millisecondes
     </script>
   </body>
 </html>
