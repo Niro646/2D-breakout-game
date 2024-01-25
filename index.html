@@ -63,18 +63,28 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height); // cleans the area of whole canvas
         drawball(); // calling function that draws the ball
         drawPaddle();
-        x = x + dx;
-        y = y + dy;
-        if (y + dy > canvas.height - ballRadius || y + dy < 0 + ballRadius) {
-          // (0,0) is at top left, so if y+dy < 0 + ballRadius that means we reached cealing
-          // (0,0) is at top left, so if y+dy > ccanvas.height - ballRadius that means we reached floor
-          dy = -dy;
-        }
 
         if (x + dx > canvas.width - ballRadius || x + dx < 0 + ballRadius) {
           // (0,0) is at top left, so if x + dx > canvas.width - ballRadius that means we reached right border
           // (0,0) is at top left, so if x + dx < 0 + ballRadius that means we reached left border
           dx = -dx;
+        }
+
+        x = x + dx; // לבדוק
+        y = y + dy; // לבדוק
+
+        if (y + dy < 0 + ballRadius) {
+          // (0,0) is at top left, so if y+dy < 0 + ballRadius that means we reached cealing
+          dy = -dy;
+        } else if (y + dy > canvas.height - ballRadius) {
+          if (x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+          } else {
+            // (0,0) is at top left, so if y+dy > ccanvas.height - ballRadius that means we reached floor
+            alert("Game Over"); // showing an alert message "game over" state upon the ball colliding with the bottom edge of the canvas.
+            document.location.reload(); // restarting the game by reloading the page
+            clearInterval(Interval); // Needed for Chrome to end game
+          }
         }
 
         if (rightPressed) {
@@ -102,7 +112,7 @@
           leftPressed = false;
         }
       }
-      setInterval(draw, 10); // executes "draw" function every 10 millisecondes
+      const Interval = setInterval(draw, 10); // executes "draw" function every 10 millisecondes
     </script>
   </body>
 </html>
