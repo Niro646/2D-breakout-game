@@ -35,6 +35,37 @@
       let paddleX = (canvas.width - paddleWidth) / 2;
       let rightPressed = false;
       let leftPressed = false;
+      const brickRowCount = 3; // number of rows of bricks
+      const brickColumnCount = 5; // number of columns of bricks
+      const brickWidth = 75; // width of brick
+      const brickHeight = 20; // height of brick
+      const brickPadding = 10; // padding between bricks
+      const brickOffsetTop = 30; // top point from which it will start drawing bricks
+      const brickOffsetLeft = 30; // left point from which it will start drawing bricks
+
+      const bricks = [];
+      for (let c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
+        for (let r = 0; r < brickRowCount; r++) {
+          bricks[c][r] = { x: 0, y: 0 };
+        }
+      }
+
+      function drawBricks() {
+        for (let c = 0; c < brickColumnCount; c++) {
+          for (let r = 0; r < brickRowCount; r++) {
+            const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+            const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+            bricks[c][r].x = brickX;
+            bricks[c][r].y = brickY;
+            ctx.beginPath();
+            ctx.rect(brickX, brickY, brickWidth, brickHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+          }
+        }
+      }
 
       function drawball() {
         //this function draws the ball
@@ -61,6 +92,7 @@
 
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // cleans the area of whole canvas
+        drawBricks();
         drawball(); // calling function that draws the ball
         drawPaddle();
 
@@ -77,10 +109,10 @@
           // (0,0) is at top left, so if y+dy < 0 + ballRadius that means we reached cealing
           dy = -dy;
         } else if (y + dy > canvas.height - ballRadius) {
+          // (0,0) is at top left, so if y+dy > ccanvas.height - ballRadius that means we reached floor
           if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
           } else {
-            // (0,0) is at top left, so if y+dy > ccanvas.height - ballRadius that means we reached floor
             alert("Game Over"); // showing an alert message "game over" state upon the ball colliding with the bottom edge of the canvas.
             document.location.reload(); // restarting the game by reloading the page
             clearInterval(Interval); // Needed for Chrome to end game
