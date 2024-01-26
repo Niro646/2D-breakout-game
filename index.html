@@ -41,6 +41,7 @@
       const brickPadding = 10; // padding between bricks
       const brickOffsetTop = 30; // top point from which it will start drawing bricks
       const brickOffsetLeft = 30; // left point from which it will start drawing bricks
+      let score = 0;
 
       const bricks = [];
       for (let c = 0; c < brickColumnCount; c++) {
@@ -96,6 +97,7 @@
         drawBricks();
         drawball(); // calling function that draws the ball
         drawPaddle();
+        drawScore();
         collisionDetection();
 
         if (x + dx > canvas.width - ballRadius || x + dx < 0 + ballRadius) {
@@ -159,12 +161,24 @@
                 y > b.y &&
                 y < b.y + brickHeight
               ) {
-                dy = -dy;
-                b.status = 0;
+                dy = -dy; // changing direction of ball after hit
+                b.status = 0; // changing status of brick to 0, meaning it's been hit
+                score = score + 1; // increase number of points by one
+                if (score === brickRowCount * brickColumnCount) {
+                  alert("YOU WIN, CONGRATULATIONS");
+                  document.location.reload();
+                  clearInterval(Interval); // Needed for Chrome to end game
+                }
               }
             }
           }
         }
+      }
+
+      function drawScore() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`score: ${score}`, 8, 20);
       }
 
       const Interval = setInterval(draw, 10); // executes "draw" function every 10 millisecondes
