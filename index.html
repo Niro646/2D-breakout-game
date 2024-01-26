@@ -42,6 +42,7 @@
       const brickOffsetTop = 30; // top point from which it will start drawing bricks
       const brickOffsetLeft = 30; // left point from which it will start drawing bricks
       let score = 0;
+      let lives = 3;
 
       const bricks = [];
       for (let c = 0; c < brickColumnCount; c++) {
@@ -98,6 +99,7 @@
         drawball(); // calling function that draws the ball
         drawPaddle();
         drawScore();
+        drawLives();
         collisionDetection();
 
         if (x + dx > canvas.width - ballRadius || x + dx < 0 + ballRadius) {
@@ -117,9 +119,19 @@
           if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
           } else {
-            alert("Game Over"); // showing an alert message "game over" state upon the ball colliding with the bottom edge of the canvas.
-            document.location.reload(); // restarting the game by reloading the document
-            clearInterval(Interval); // Needed for Chrome to end game
+            console.log("Game Over");
+            lives = lives - 1;
+            if (!lives) {
+              alert("Game Over"); // showing an alert message "game over" state upon the ball colliding with the bottom edge of the canvas.
+              document.location.reload(); // restarting the game by reloading the document
+            } else {
+              console.log("Restarting game...");
+              x = canvas.width / 2;
+              y = canvas.height - 30;
+              dx = 2;
+              dy = -2;
+              paddleX = (canvas.width - paddleWidth) / 2;
+            }
           }
         }
 
@@ -128,6 +140,8 @@
         } else if (leftPressed) {
           paddleX = Math.max(paddleX - 7, 0);
         }
+
+        requestAnimationFrame(draw);
       }
 
       document.addEventListener("keydown", keyDownHandler, false);
@@ -136,8 +150,6 @@
 
       function mouseMoveHandler(e) {
         const relativeX = e.clientX - canvas.offsetLeft; // basiclly the x value from the viewport minus the distance between the left edge of the canvas and the left edge of viewport
-        console.log(`"e.clientX: ${e.clientX}`);
-        console.log(`"canvas.offsetLeft: ${canvas.offsetLeft}`);
         if (relativeX > 0 && relativeX < canvas.width) {
           paddleX = relativeX - paddleWidth / 2;
         }
@@ -177,7 +189,6 @@
                 if (score === brickRowCount * brickColumnCount) {
                   alert("YOU WIN, CONGRATULATIONS");
                   document.location.reload();
-                  clearInterval(Interval); // Needed for Chrome to end game
                 }
               }
             }
@@ -191,7 +202,13 @@
         ctx.fillText(`score: ${score}`, 8, 20);
       }
 
-      const Interval = setInterval(draw, 10); // executes "draw" function every 10 millisecondes
+      function drawLives() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
+      }
+
+      draw();
     </script>
   </body>
 </html>
