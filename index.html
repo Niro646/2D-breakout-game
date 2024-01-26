@@ -118,7 +118,7 @@
             dy = -dy;
           } else {
             alert("Game Over"); // showing an alert message "game over" state upon the ball colliding with the bottom edge of the canvas.
-            document.location.reload(); // restarting the game by reloading the page
+            document.location.reload(); // restarting the game by reloading the document
             clearInterval(Interval); // Needed for Chrome to end game
           }
         }
@@ -132,6 +132,16 @@
 
       document.addEventListener("keydown", keyDownHandler, false);
       document.addEventListener("keyup", keyUpHandler, false);
+      document.addEventListener("mousemove", mouseMoveHandler, false);
+
+      function mouseMoveHandler(e) {
+        const relativeX = e.clientX - canvas.offsetLeft; // basiclly the x value from the viewport minus the distance between the left edge of the canvas and the left edge of viewport
+        console.log(`"e.clientX: ${e.clientX}`);
+        console.log(`"canvas.offsetLeft: ${canvas.offsetLeft}`);
+        if (relativeX > 0 && relativeX < canvas.width) {
+          paddleX = relativeX - paddleWidth / 2;
+        }
+      }
 
       function keyDownHandler(e) {
         if (e.key === "Right" || e.key === "ArrowRight") {
